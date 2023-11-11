@@ -2,6 +2,9 @@ package christmas.view;
 
 import camp.nextstep.edu.missionutils.Console;
 import christmas.util.Validator;
+import christmas.view.dto.OrderMenuDto;
+import java.util.ArrayList;
+import java.util.List;
 
 public class InputView {
 
@@ -12,5 +15,18 @@ public class InputView {
         Validator.validateIntFormat(date);
 
         return Integer.parseInt(date);
+    }
+
+    public List<OrderMenuDto> readOrderMenus() {
+        System.out.println("주문하실 메뉴를 메뉴와 개수를 알려 주세요. (e.g. 해산물파스타-2,레드와인-1,초코케이크-1)");
+        String orderMenus = Console.readLine();
+        Validator.validateOrderMenusFormat(orderMenus);
+
+        List<OrderMenuDto> orderMenuDtos = new ArrayList<>();
+        for (String orderMenu : orderMenus.split(",")) {
+            String[] orderMenuValues = orderMenu.split("-");
+            orderMenuDtos.add(new OrderMenuDto(orderMenuValues[0], Integer.parseInt(orderMenuValues[1])));
+        }
+        return orderMenuDtos;
     }
 }
