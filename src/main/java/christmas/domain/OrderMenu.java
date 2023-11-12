@@ -34,4 +34,8 @@ public class OrderMenu {
     public Menu getMenu() {
         return menu;
     }
+
+    public String getMenuName() {
+        return menu.name();
+    }
 }

@@ -5,16 +5,28 @@ import christmas.domain.OrderMenus;
 import christmas.domain.ReservationDate;
 import christmas.view.InputView;
 import christmas.view.OutputView;
+import christmas.view.converter.ChristmasEventMessageConverter;
 import christmas.view.dto.OrderMenuDto;
 import java.util.List;
 
 public class Application {
     static InputView inputView = new InputView();
     static OutputView outputView = new OutputView();
+    static ChristmasEventMessageConverter messageConverter = new ChristmasEventMessageConverter();
 
     public static void main(String[] args) {
         reserveVisitDate();
-        orderMenus();
+        OrderMenus orderMenus = orderMenus();
+        printOrderResult(orderMenus);
+    }
+
+    private static void printOrderResult(OrderMenus orderMenus) {
+        outputView.println("12월 26일에 우테코 식당에서 받을 이벤트 혜택 미리 보기!\n");
+        printOrderMenus(orderMenus);
+    }
+
+    private static void printOrderMenus(OrderMenus orderMenus) {
+        outputView.println(messageConverter.convertOrderMenuMessage(orderMenus));
     }
 
     private static ReservationDate reserveVisitDate() {

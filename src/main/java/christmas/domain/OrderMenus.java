@@ -1,5 +1,6 @@
 package christmas.domain;
 
+import java.util.Collections;
 import java.util.List;
 
 public class OrderMenus {
@@ -49,5 +50,9 @@ public class OrderMenus {
         if(orderMenuCount == drinkMenuCount) {
             throw new IllegalArgumentException("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
         }
+    }
+
+    public List<OrderMenu> getOrderMenus() {
+        return Collections.unmodifiableList(orderMenus);
     }
 }
