@@ -52,6 +52,12 @@ public class OrderMenus {
         }
     }
 
+    public int calculateTotalPrice() {
+        return orderMenus.stream()
+                .map(OrderMenu::getTotalPrice)
+                .reduce(0, Integer::sum);
+    }
+
     public List<OrderMenu> getOrderMenus() {
         return Collections.unmodifiableList(orderMenus);
     }

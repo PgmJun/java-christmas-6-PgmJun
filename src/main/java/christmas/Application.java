@@ -23,10 +23,15 @@ public class Application {
     private static void printOrderResult(OrderMenus orderMenus) {
         outputView.println("12월 26일에 우테코 식당에서 받을 이벤트 혜택 미리 보기!\n");
         printOrderMenus(orderMenus);
+        printTotalPriceBeforeDiscount(orderMenus);
     }
 
     private static void printOrderMenus(OrderMenus orderMenus) {
         outputView.println(messageConverter.convertOrderMenuMessage(orderMenus));
+    }
+
+    private static void printTotalPriceBeforeDiscount(OrderMenus orderMenus) {
+        outputView.println(messageConverter.convertTotalPriceBeforeDiscountInfoMessage(orderMenus.calculateTotalPrice()));
     }
 
     private static ReservationDate reserveVisitDate() {

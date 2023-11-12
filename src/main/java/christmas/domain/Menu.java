@@ -21,6 +21,10 @@ public enum Menu {
         return type;
     }
 
+    public int getPrice() {
+        return price;
+    }
+
     public static boolean isExistMenu(String name) {
         return Arrays.stream(Menu.values())
                 .anyMatch(menu -> menu.name().equals(name));
