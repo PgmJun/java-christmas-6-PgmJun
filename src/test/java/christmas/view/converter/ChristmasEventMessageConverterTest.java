@@ -1,7 +1,5 @@
 package christmas.view.converter;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import christmas.domain.Menu;
 import christmas.domain.OrderMenu;
 import christmas.domain.OrderMenus;
@@ -21,7 +19,7 @@ class ChristmasEventMessageConverterTest {
         List<OrderMenu> orderMenus = List.of(new OrderMenu(Menu.초코케이크.name(), amount1), new OrderMenu(Menu.바비큐립.name(), amount2),
                 new OrderMenu(Menu.해산물파스타.name(), amount3));
 
-        String actualValue = messageConverter.convertOrderMenuMessage(new OrderMenus(orderMenus));
+        String actualValue = messageConverter.convertOrderMenuInfoMessage(new OrderMenus(orderMenus));
         Assertions.assertEquals(expectedValue, actualValue);
     }
 

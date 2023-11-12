@@ -1,5 +1,6 @@
 package christmas;
 
+import christmas.domain.Menu;
 import christmas.domain.OrderMenu;
 import christmas.domain.OrderMenus;
 import christmas.domain.ReservationDate;
@@ -8,6 +9,7 @@ import christmas.view.OutputView;
 import christmas.view.converter.ChristmasEventMessageConverter;
 import christmas.view.dto.OrderMenuDto;
 import java.util.List;
+import java.util.Optional;
 
 public class Application {
     static InputView inputView = new InputView();
@@ -15,23 +17,37 @@ public class Application {
     static ChristmasEventMessageConverter messageConverter = new ChristmasEventMessageConverter();
 
     public static void main(String[] args) {
-        reserveVisitDate();
+        ReservationDate reservationDate = reserveVisitDate();
         OrderMenus orderMenus = orderMenus();
-        printOrderResult(orderMenus);
+        printOrderResult(orderMenus, reservationDate);
     }
 
-    private static void printOrderResult(OrderMenus orderMenus) {
+    private static void printOrderResult(OrderMenus orderMenus, ReservationDate reservationDate) {
         outputView.println("12월 26일에 우테코 식당에서 받을 이벤트 혜택 미리 보기!\n");
-        printOrderMenus(orderMenus);
-        printTotalPriceBeforeDiscount(orderMenus);
+        printOrderMenusInfo(orderMenus);
+        printTotalPriceBeforeDiscountInfo(orderMenus);
+        printGiftMenuInfo(receiveGiftMenuWhenOverStandardPrice(orderMenus, 120_000));
     }
 
-    private static void printOrderMenus(OrderMenus orderMenus) {
-        outputView.println(messageConverter.convertOrderMenuMessage(orderMenus));
+    private static void printOrderMenusInfo(OrderMenus orderMenus) {
+        outputView.println(messageConverter.convertOrderMenuInfoMessage(orderMenus));
     }
 
-    private static void printTotalPriceBeforeDiscount(OrderMenus orderMenus) {
+    private static void printTotalPriceBeforeDiscountInfo(OrderMenus orderMenus) {
         outputView.println(messageConverter.convertTotalPriceBeforeDiscountInfoMessage(orderMenus.calculateTotalPrice()));
+    }
+
+    private static void printGiftMenuInfo(Optional<OrderMenu> giftMenu) {
+        outputView.println(messageConverter.convertGiftMenuInfoMessage(giftMenu));
+    }
+
+    private static Optional<OrderMenu> receiveGiftMenuWhenOverStandardPrice(OrderMenus orderMenus, int standardPrice) {
+        Optional<OrderMenu> giftMenu = Optional.empty();
+        if(orderMenus.calculateTotalPrice() > standardPrice) {
+            giftMenu = Optional.of(new OrderMenu(Menu.샴페인.name(), 1));
+            orderMenus.receiveGiftMenu(giftMenu.get());
+        }
+        return giftMenu;
     }
 
     private static ReservationDate reserveVisitDate() {

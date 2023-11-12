@@ -3,11 +3,12 @@ package christmas.view.converter;
 import christmas.domain.OrderMenu;
 import christmas.domain.OrderMenus;
 import java.text.DecimalFormat;
+import java.util.Optional;
 
 public class ChristmasEventMessageConverter {
     private final DecimalFormat priceFormat = new DecimalFormat("#,###원\n");
 
-    public String convertOrderMenuMessage(OrderMenus orderMenus) {
+    public String convertOrderMenuInfoMessage(OrderMenus orderMenus) {
         StringBuilder orderMenuMessage = new StringBuilder();
         orderMenuMessage.append("<주문 메뉴>\n");
         for (OrderMenu orderMenu : orderMenus.getOrderMenus()) {
@@ -22,6 +23,18 @@ public class ChristmasEventMessageConverter {
         totalPriceBeforeDiscountInfoMessage.append(priceFormat.format(totalPrice));
 
         return totalPriceBeforeDiscountInfoMessage.toString();
+    }
+
+    public String convertGiftMenuInfoMessage(Optional<OrderMenu> giftMenu) {
+        StringBuilder giftMenuInfoMessage = new StringBuilder();
+        giftMenuInfoMessage.append("<증정 메뉴>\n");
+
+        if(giftMenu.isPresent()) {
+            giftMenuInfoMessage.append(String.format("%s %d개\n", giftMenu.get().getMenuName(), giftMenu.get().getAmount()));
+            return giftMenuInfoMessage.toString();
+        }
+        giftMenuInfoMessage.append("없음");
+        return giftMenuInfoMessage.toString();
     }
 }
 
