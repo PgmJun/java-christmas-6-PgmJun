@@ -7,9 +7,9 @@ public class Validator {
     private final static Pattern INT_FORMAT = Pattern.compile("\\d+");
 
 
-    public static void validateIntFormat(String value) {
+    public static void validateReservationDateFormat(String value) {
         if (!INT_FORMAT.matcher(value).matches()) {
-            throw new IllegalArgumentException("[ERROR] 입력 값이 정수 형태가 아닙니다.");
+            throw new IllegalArgumentException("[ERROR] 유효하지 않은 날짜입니다. 다시 입력해 주세요.");
         }
     }
 
