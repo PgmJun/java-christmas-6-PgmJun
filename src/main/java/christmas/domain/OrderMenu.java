@@ -35,6 +35,10 @@ public class OrderMenu {
         return menu;
     }
 
+    public String getMenuType() {
+        return menu.getType();
+    }
+
     public int getTotalPrice() {
         return menu.getPrice() * amount;
     }

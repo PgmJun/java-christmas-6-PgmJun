@@ -1,5 +1,6 @@
 package christmas;
 
+import christmas.domain.Discount;
 import christmas.domain.Menu;
 import christmas.domain.OrderMenu;
 import christmas.domain.OrderMenus;
@@ -19,22 +20,55 @@ public class Application {
     public static void main(String[] args) {
         ReservationDate reservationDate = reserveVisitDate();
         OrderMenus orderMenus = orderMenus();
-        printOrderResult(orderMenus, reservationDate);
-    }
 
-    private static void printOrderResult(OrderMenus orderMenus, ReservationDate reservationDate) {
         outputView.println("12월 26일에 우테코 식당에서 받을 이벤트 혜택 미리 보기!\n");
         printOrderMenusInfo(orderMenus);
-        printTotalPriceBeforeDiscountInfo(orderMenus);
-        printGiftMenuInfo(receiveGiftMenuWhenOverStandardPrice(orderMenus, 120_000));
+
+        printTotalPriceBeforeDiscountInfo(orderMenus.calculateTotalPrice());
+
+        Optional<OrderMenu> giftMenu = receiveGiftMenuWhenOverStandardPrice(orderMenus, 120_000);
+        printGiftMenuInfo(giftMenu);
+
+        Discount discount = calculateDiscountPrice(orderMenus, reservationDate, 10_000);
+        outputView.println(messageConverter.covertBenefitsInfoMessage(discount, reservationDate.isWeekends(), giftMenu));
+    }
+
+    private static Discount calculateDiscountPrice(OrderMenus orderMenus, ReservationDate reservationDate, int discountApplyStandard) {
+        int totalPriceBeforeDiscount = orderMenus.calculateTotalPrice();
+        if(totalPriceBeforeDiscount < discountApplyStandard){
+            return Discount.noneDiscount();
+        }
+
+        int ddayDiscountPrice = calculateDdayDiscountPrice(reservationDate, totalPriceBeforeDiscount);
+        int dayOfWeekDiscountPrice = calculateDayOfWeekDiscountPrice(reservationDate, orderMenus);
+        int specialDiscountPrice = calculateSpecialDiscountPrice(reservationDate);
+
+        return new Discount(ddayDiscountPrice, dayOfWeekDiscountPrice, specialDiscountPrice);
+    }
+
+    private static int calculateSpecialDiscountPrice(ReservationDate reservationDate) {
+        int specialDiscountPrice = 0;
+        if (reservationDate.isSpecialDay()) {
+            specialDiscountPrice = 1_000;
+        }
+
+        return specialDiscountPrice;
+    }
+
+    private static int calculateDayOfWeekDiscountPrice(ReservationDate reservationDate, OrderMenus orderMenus) {
+        return orderMenus.calculateDayOfWeekDiscountPrice(reservationDate.isWeekends());
+    }
+
+    private static int calculateDdayDiscountPrice(ReservationDate reservationDate, int totalPriceBeforeDiscount) {
+        return reservationDate.calculateChristmasDdayDiscountPrice();
     }
 
     private static void printOrderMenusInfo(OrderMenus orderMenus) {
         outputView.println(messageConverter.convertOrderMenuInfoMessage(orderMenus));
     }
 
-    private static void printTotalPriceBeforeDiscountInfo(OrderMenus orderMenus) {
-        outputView.println(messageConverter.convertTotalPriceBeforeDiscountInfoMessage(orderMenus.calculateTotalPrice()));
+    private static void printTotalPriceBeforeDiscountInfo(int totalPriceBeforeDiscount) {
+        outputView.println(messageConverter.convertTotalPriceBeforeDiscountInfoMessage(totalPriceBeforeDiscount));
     }
 
     private static void printGiftMenuInfo(Optional<OrderMenu> giftMenu) {
@@ -43,7 +77,7 @@ public class Application {
 
     private static Optional<OrderMenu> receiveGiftMenuWhenOverStandardPrice(OrderMenus orderMenus, int standardPrice) {
         Optional<OrderMenu> giftMenu = Optional.empty();
-        if(orderMenus.calculateTotalPrice() > standardPrice) {
+        if (orderMenus.calculateTotalPrice() > standardPrice) {
             giftMenu = Optional.of(new OrderMenu(Menu.샴페인.name(), 1));
             orderMenus.receiveGiftMenu(giftMenu.get());
         }
@@ -62,7 +96,7 @@ public class Application {
     }
 
     private static OrderMenus orderMenus() {
-        while(true) {
+        while (true) {
             try {
                 List<OrderMenuDto> orderMenuDtos = inputView.readOrderMenus();
                 List<OrderMenu> orderMenus = orderMenuDtos.stream()

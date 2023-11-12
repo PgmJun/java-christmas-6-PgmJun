@@ -1,5 +1,6 @@
 package christmas.view.converter;
 
+import christmas.domain.Discount;
 import christmas.domain.OrderMenu;
 import christmas.domain.OrderMenus;
 import java.text.DecimalFormat;
@@ -7,6 +8,7 @@ import java.util.Optional;
 
 public class ChristmasEventMessageConverter {
     private final DecimalFormat priceFormat = new DecimalFormat("#,###원\n");
+    private final DecimalFormat discountFormat = new DecimalFormat("-#,###원\n");
 
     public String convertOrderMenuInfoMessage(OrderMenus orderMenus) {
         StringBuilder orderMenuMessage = new StringBuilder();
@@ -33,8 +35,59 @@ public class ChristmasEventMessageConverter {
             giftMenuInfoMessage.append(String.format("%s %d개\n", giftMenu.get().getMenuName(), giftMenu.get().getAmount()));
             return giftMenuInfoMessage.toString();
         }
-        giftMenuInfoMessage.append("없음");
+        giftMenuInfoMessage.append("없음\n");
         return giftMenuInfoMessage.toString();
+    }
+
+    public String covertBenefitsInfoMessage(Discount discount, boolean isWeekends, Optional<OrderMenu> giftMenu) {
+        StringBuilder benefitsInfoMessage = new StringBuilder();
+        benefitsInfoMessage.append("<혜택 내역>\n");
+        if(discount.isDiscountApplied() || giftMenu.isPresent()) {
+            return createDiscountInfoMessage(discount, isWeekends, giftMenu, benefitsInfoMessage);
+        }
+        return createNoneDiscountInfoMessage(benefitsInfoMessage);
+    }
+
+    private String createNoneDiscountInfoMessage(StringBuilder benefitsInfoMessage) {
+        benefitsInfoMessage.append("없음\n\n");
+        benefitsInfoMessage.append("<총혜택 금액>\n0원\n");
+
+        return benefitsInfoMessage.toString();
+    }
+
+    private String createDiscountInfoMessage(Discount discount, boolean isWeekends, Optional<OrderMenu> giftMenu,
+                             StringBuilder benefitsInfoMessage) {
+        if(discount.getDdayDiscountPrice() > 0) {
+            benefitsInfoMessage.append(String.format("크리스마스 디데이 할인: %s", discountFormat.format(discount.getDdayDiscountPrice())));
+        }
+        if(discount.getDayOfWeekDiscountPrice() > 0) {
+            benefitsInfoMessage.append(String.format("%s 할인 : %s", createWeekendsOrWeekDaysInfoMessage(isWeekends), discountFormat.format(discount.getDayOfWeekDiscountPrice())));
+        }
+        if(discount.getSpecialDiscountPrice() > 0) {
+            benefitsInfoMessage.append(String.format("특별 할인: %s", discountFormat.format(discount.getSpecialDiscountPrice())));
+        }
+        if(giftMenu.isPresent()) {
+            benefitsInfoMessage.append(String.format("증정 이벤트: %s\n", discountFormat.format(giftMenu.get().getTotalPrice())));
+        }
+        addTotalDiscountPriceInfo(discount, benefitsInfoMessage, giftMenu);
+        return benefitsInfoMessage.toString();
+    }
+
+    private void addTotalDiscountPriceInfo(Discount discount, StringBuilder benefitsInfoMessage, Optional<OrderMenu> giftMenu) {
+        int totalDiscountPrice = discount.getTotalDiscountPrice();
+        if(giftMenu.isPresent()) {
+            totalDiscountPrice += giftMenu.get().getTotalPrice();
+        }
+
+        benefitsInfoMessage.append("<총혜택 금액>\n");
+        benefitsInfoMessage.append(discountFormat.format(totalDiscountPrice));
+    }
+
+    private String createWeekendsOrWeekDaysInfoMessage(boolean isWeekends) {
+        if(isWeekends) {
+            return "주말";
+        }
+        return "평일";
     }
 }
 

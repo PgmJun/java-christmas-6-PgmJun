@@ -1,5 +1,6 @@
 package christmas.domain;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -48,7 +49,7 @@ public class OrderMenus {
                 .filter(menu -> menu.getType().equals("음료"))
                 .count();
 
-        if(orderMenuCount == drinkMenuCount) {
+        if (orderMenuCount == drinkMenuCount) {
             throw new IllegalArgumentException("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
         }
     }
@@ -57,6 +58,27 @@ public class OrderMenus {
         return orderMenus.stream()
                 .map(OrderMenu::getTotalPrice)
                 .reduce(0, Integer::sum);
+    }
+
+    public int calculateDayOfWeekDiscountPrice(boolean isWeekends) {
+        int discountPrice = 2023;
+        return (int) (discountPrice * getDayOfWeekDiscountCount(isWeekends));
+    }
+
+    private long getDayOfWeekDiscountCount(boolean isWeekends) {
+        List<OrderMenu> menus = new ArrayList<>();
+        if (isWeekends) {
+            menus = orderMenus.stream()
+                    .filter(orderMenu -> orderMenu.getMenuType().equals("메인"))
+                    .toList();
+        } else if (!isWeekends) {
+            menus = orderMenus.stream()
+                    .filter(orderMenu -> orderMenu.getMenuType().equals("디저트"))
+                    .toList();
+        }
+
+        return menus.stream()
+                .mapToInt(OrderMenu::getAmount).sum();
     }
 
     public void receiveGiftMenu(OrderMenu giftMenu) {
