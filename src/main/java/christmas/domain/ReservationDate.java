@@ -43,4 +43,8 @@ public class ReservationDate {
     public boolean isSpecialDay() {
         return specialDay.contains(date);
     }
+
+    public int getDate() {
+        return date;
+    }
 }

@@ -1,5 +1,6 @@
 package christmas;
 
+import christmas.domain.Badge;
 import christmas.domain.Discount;
 import christmas.domain.Menu;
 import christmas.domain.OrderMenu;
@@ -21,7 +22,8 @@ public class Application {
         ReservationDate reservationDate = reserveVisitDate();
         OrderMenus orderMenus = orderMenus();
 
-        outputView.println("12월 26일에 우테코 식당에서 받을 이벤트 혜택 미리 보기!\n");
+        printBenefitsInfoMessage(reservationDate);
+
         printOrderMenusInfo(orderMenus);
 
         printTotalPriceBeforeDiscountInfo(orderMenus.calculateTotalPrice());
@@ -31,6 +33,25 @@ public class Application {
 
         Discount discount = calculateDiscountPrice(orderMenus, reservationDate, 10_000);
         outputView.println(messageConverter.covertBenefitsInfoMessage(discount, reservationDate.isWeekends(), giftMenu));
+
+        int totalDiscountPrice = discount.getTotalDiscountPrice();
+        outputView.println(messageConverter.convertAfterApplyBenefitPrice(orderMenus.calculateTotalPrice(), totalDiscountPrice));
+
+        Badge badge = Badge.issue(calculateTotalBenefitPrice(discount, giftMenu));
+        outputView.println(messageConverter.convertEventBadgeInfoMessage(badge));
+    }
+
+    private static int calculateTotalBenefitPrice(Discount discount, Optional<OrderMenu> giftMenu) {
+        int totalDiscountPrice = discount.getTotalDiscountPrice();
+        if(giftMenu.isPresent()) {
+            totalDiscountPrice += giftMenu.get().getTotalPrice();
+        }
+
+        return totalDiscountPrice;
+    }
+
+    private static void printBenefitsInfoMessage(ReservationDate reservationDate) {
+        outputView.println(messageConverter.convertBenefitsInfoMessage(reservationDate.getDate()));
     }
 
     private static Discount calculateDiscountPrice(OrderMenus orderMenus, ReservationDate reservationDate, int discountApplyStandard) {
