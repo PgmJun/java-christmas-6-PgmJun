@@ -102,12 +102,12 @@ public class ChristmasEventMessageConverter {
         return "평일";
     }
 
-    public String convertAfterApplyBenefitPrice(int totalPrice, int totalBenefitPrice) {
-        StringBuilder afterApplyBenefitsInfoMessage = new StringBuilder();
-        afterApplyBenefitsInfoMessage.append("<할인 후 예상 결제 금액>\n");
-        afterApplyBenefitsInfoMessage.append(priceFormat.format(totalPrice - totalBenefitPrice));
+    public String convertAfterAppliedDiscountPrice(int totalPrice, int totalBenefitPrice) {
+        StringBuilder afterAppliedDiscountInfoMessage = new StringBuilder();
+        afterAppliedDiscountInfoMessage.append("<할인 후 예상 결제 금액>\n");
+        afterAppliedDiscountInfoMessage.append(priceFormat.format(totalPrice - totalBenefitPrice));
 
-        return afterApplyBenefitsInfoMessage.toString();
+        return afterAppliedDiscountInfoMessage.toString();
     }
 
     public String convertEventBadgeInfoMessage(Badge badge) {

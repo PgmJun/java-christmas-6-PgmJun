@@ -25,34 +25,41 @@ public class ChristmasEventProgram {
         ReservationDate reservationDate = reserveVisitDate();
         OrderMenus orderMenus = orderMenus();
 
+        // 예약정보 출력
         printBenefitsInfoMessage(reservationDate);
-
         printOrderMenusInfo(orderMenus);
-
         printTotalPriceBeforeDiscountInfo(orderMenus.calculateTotalPrice());
 
-        Optional<GiftMenu> giftMenu = receiveGiftMenu(orderMenus, 120_000);
-        printGiftMenuInfo(giftMenu);
+        Optional<GiftMenu> giftMenu = checkGiftMenu(orderMenus);
+        Discount discount = checkDiscount(orderMenus, reservationDate, giftMenu);
+        Benefits benefits = new Benefits(discount, giftMenu);
 
-        Discount discount = calculateDiscountPrice(orderMenus, reservationDate, 10_000);
-        outputView.println(
-                messageConverter.covertBenefitsInfoMessage(discount, reservationDate.isWeekends(), giftMenu));
+        printAfterAppliedDiscountPrice(orderMenus, benefits);
+        checkIssuedBadge(benefits);
+    }
 
-        int totalDiscountPrice = discount.getTotalDiscountPrice();
-        outputView.println(
-                messageConverter.convertAfterApplyBenefitPrice(orderMenus.calculateTotalPrice(), totalDiscountPrice));
-
-        Badge badge = Badge.issue(calculateTotalBenefitPrice(discount, giftMenu));
+    private void checkIssuedBadge(Benefits benefits) {
+        Badge badge = Badge.issue(benefits.getTotalBenefitPrice());
         outputView.println(messageConverter.convertEventBadgeInfoMessage(badge));
     }
 
-    private int calculateTotalBenefitPrice(Discount discount, Optional<GiftMenu> giftMenu) {
-        int totalDiscountPrice = discount.getTotalDiscountPrice();
-        if (giftMenu.isPresent()) {
-            totalDiscountPrice += giftMenu.get().getTotalPrice();
-        }
+    private void printAfterAppliedDiscountPrice(OrderMenus orderMenus, Benefits benefits) {
+        outputView.println(
+                messageConverter.convertAfterAppliedDiscountPrice(orderMenus.calculateTotalPrice(), benefits.getTotalDiscountPrice()));
+    }
 
-        return totalDiscountPrice;
+    private Discount checkDiscount(OrderMenus orderMenus, ReservationDate reservationDate, Optional<GiftMenu> giftMenu) {
+        Discount discount = calculateDiscountPrice(orderMenus, reservationDate, 10_000);
+        outputView.println(
+                messageConverter.covertBenefitsInfoMessage(discount, reservationDate.isWeekends(), giftMenu));
+        return discount;
+    }
+
+    private Optional<GiftMenu> checkGiftMenu(OrderMenus orderMenus) {
+        Optional<GiftMenu> giftMenu = receiveGiftMenu(orderMenus, 120_000);
+        printGiftMenuInfo(giftMenu);
+
+        return giftMenu;
     }
 
     private void printBenefitsInfoMessage(ReservationDate reservationDate) {
