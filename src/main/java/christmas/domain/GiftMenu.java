@@ -13,7 +13,7 @@ public class GiftMenu extends OrderMenu{
 
     public static Optional<GiftMenu> receive(int totalPrice) {
         Optional<GiftMenu> giftMenu = Optional.empty();
-        if (totalPrice > GIFT_STANDARD_PRICE) {
+        if (totalPrice >= GIFT_STANDARD_PRICE) {
             giftMenu = Optional.of(new GiftMenu(GIFT_MENU.name(), GIFT_AMOUNT));
         }
 
