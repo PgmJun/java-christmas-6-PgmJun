@@ -78,9 +78,7 @@ public class ChristmasEventProgram {
     }
 
     private Discount checkDiscount(OrderMenus orderMenus, ReservationDate reservationDate) {
-        Discount discount = Discount.calculateFrom(orderMenus, reservationDate);
-
-        return discount;
+        return Discount.calculateFrom(orderMenus, reservationDate);
     }
 
     private Benefits checkBenefits(ReservationDate reservationDate, Discount discount, Optional<GiftMenu> giftMenu) {
