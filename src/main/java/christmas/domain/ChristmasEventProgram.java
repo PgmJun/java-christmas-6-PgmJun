@@ -83,18 +83,9 @@ public class ChristmasEventProgram {
     }
 
     private Optional<GiftMenu> checkGiftMenu(OrderMenus orderMenus) {
-        Optional<GiftMenu> giftMenu = receiveGiftMenu(orderMenus, 120_000);
+        Optional<GiftMenu> giftMenu = GiftMenu.receive(orderMenus.calculateTotalPrice());
         outputView.println(messageConverter.convertGiftMenuInfoMessage(giftMenu));
 
-        return giftMenu;
-    }
-
-    private Optional<GiftMenu> receiveGiftMenu(OrderMenus orderMenus, int standardPrice) {
-        Optional<GiftMenu> giftMenu = Optional.empty();
-        if (orderMenus.calculateTotalPrice() > standardPrice) {
-            giftMenu = Optional.of(new GiftMenu(Menu.샴페인.name(), 1));
-            orderMenus.receiveGiftMenu(giftMenu.get());
-        }
         return giftMenu;
     }
 

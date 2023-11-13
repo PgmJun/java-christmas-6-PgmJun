@@ -7,7 +7,6 @@ import java.util.List;
 public class OrderMenus {
 
     private final List<OrderMenu> orderMenus;
-    private OrderMenu giftMenu;
 
     public OrderMenus(List<OrderMenu> orderMenus) {
         validate(orderMenus);
@@ -79,10 +78,6 @@ public class OrderMenus {
 
         return menus.stream()
                 .mapToInt(OrderMenu::getAmount).sum();
-    }
-
-    public void receiveGiftMenu(OrderMenu giftMenu) {
-        this.giftMenu = giftMenu;
     }
 
     public List<OrderMenu> getOrderMenus() {
