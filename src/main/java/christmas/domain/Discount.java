@@ -6,6 +6,8 @@ public class Discount {
     private final int dayOfWeekDiscountPrice;
     private final int specialDiscountPrice;
 
+    private static final int DISCOUNT_APPLY_STANDARD = 10_000;
+
     public Discount(int ddayDiscountPrice, int dayOfWeekDiscountPrice, int specialDiscountPrice) {
         this.ddayDiscountPrice = ddayDiscountPrice;
         this.dayOfWeekDiscountPrice = dayOfWeekDiscountPrice;
@@ -16,10 +18,9 @@ public class Discount {
         return new Discount(0, 0, 0);
     }
 
-    public static Discount calculateFrom(OrderMenus orderMenus, ReservationDate reservationDate,
-                                         int discountApplyStandard) {
+    public static Discount calculateFrom(OrderMenus orderMenus, ReservationDate reservationDate) {
         int totalPriceBeforeDiscount = orderMenus.calculateTotalPrice();
-        if (totalPriceBeforeDiscount < discountApplyStandard) {
+        if (totalPriceBeforeDiscount < DISCOUNT_APPLY_STANDARD) {
             return Discount.noneDiscount();
         }
 
