@@ -5,6 +5,7 @@ import christmas.domain.Discount;
 import christmas.domain.GiftMenu;
 import christmas.domain.OrderMenu;
 import christmas.domain.OrderMenus;
+import christmas.domain.ReservationDate;
 import java.text.DecimalFormat;
 import java.util.Optional;
 
@@ -12,8 +13,8 @@ public class ChristmasEventMessageConverter {
     private final DecimalFormat priceFormat = new DecimalFormat("#,###원\n");
     private final DecimalFormat discountFormat = new DecimalFormat("-#,###원\n");
 
-    public String convertBenefitsInfoMessage(int date) {
-        return String.format("12월 %d일에 우테코 식당에서 받을 이벤트 혜택 미리 보기!\n", date);
+    public String convertBenefitsOfDateMessage(ReservationDate reservationDate) {
+        return String.format("12월 %d일에 우테코 식당에서 받을 이벤트 혜택 미리 보기!\n", reservationDate.getDate());
     }
 
     public String convertOrderMenuInfoMessage(OrderMenus orderMenus) {
@@ -25,10 +26,10 @@ public class ChristmasEventMessageConverter {
         return orderMenuMessage.toString();
     }
 
-    public String convertTotalPriceBeforeDiscountInfoMessage(int totalPrice) {
+    public String convertTotalPriceBeforeDiscountInfoMessage(OrderMenus orderMenus) {
         StringBuilder totalPriceBeforeDiscountInfoMessage = new StringBuilder();
         totalPriceBeforeDiscountInfoMessage.append("<할인 전 총주문 금액>\n");
-        totalPriceBeforeDiscountInfoMessage.append(priceFormat.format(totalPrice));
+        totalPriceBeforeDiscountInfoMessage.append(priceFormat.format(orderMenus.calculateTotalPrice()));
 
         return totalPriceBeforeDiscountInfoMessage.toString();
     }

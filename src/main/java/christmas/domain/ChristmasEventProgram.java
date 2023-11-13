@@ -56,21 +56,9 @@ public class ChristmasEventProgram {
     }
 
     private void showReservationInfo(ReservationDate reservationDate, OrderMenus orderMenus) {
-        printBenefitsInfoMessage(reservationDate);
-        printOrderMenusInfo(orderMenus);
-        printTotalPriceBeforeDiscountInfo(orderMenus.calculateTotalPrice());
-    }
-
-    private void printBenefitsInfoMessage(ReservationDate reservationDate) {
-        outputView.println(messageConverter.convertBenefitsInfoMessage(reservationDate.getDate()));
-    }
-
-    private void printOrderMenusInfo(OrderMenus orderMenus) {
+        outputView.println(messageConverter.convertBenefitsOfDateMessage(reservationDate));
         outputView.println(messageConverter.convertOrderMenuInfoMessage(orderMenus));
-    }
-
-    private void printTotalPriceBeforeDiscountInfo(int totalPriceBeforeDiscount) {
-        outputView.println(messageConverter.convertTotalPriceBeforeDiscountInfoMessage(totalPriceBeforeDiscount));
+        outputView.println(messageConverter.convertTotalPriceBeforeDiscountInfoMessage(orderMenus));
     }
 
     private void showBenefitsInfo(ReservationDate reservationDate, OrderMenus orderMenus) {

@@ -38,7 +38,7 @@ class ChristmasEventMessageConverterTest {
         List<OrderMenu> orderMenus = List.of(new OrderMenu(Menu.초코케이크.name(), amount1), new OrderMenu(Menu.바비큐립.name(), amount2),
                 new OrderMenu(Menu.해산물파스타.name(), amount3));
 
-        String actualValue = messageConverter.convertTotalPriceBeforeDiscountInfoMessage(new OrderMenus(orderMenus).calculateTotalPrice());
+        String actualValue = messageConverter.convertTotalPriceBeforeDiscountInfoMessage(new OrderMenus(orderMenus));
         Assertions.assertEquals(expectedValue, actualValue);
     }
 
