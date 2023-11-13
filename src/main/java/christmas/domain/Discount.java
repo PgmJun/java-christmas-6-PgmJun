@@ -14,10 +14,6 @@ public class Discount {
         this.specialDiscountPrice = specialDiscountPrice;
     }
 
-    public static Discount noneDiscount() {
-        return new Discount(0, 0, 0);
-    }
-
     public static Discount calculateFrom(OrderMenus orderMenus, ReservationDate reservationDate) {
         int totalPriceBeforeDiscount = orderMenus.calculateTotalPrice();
         if (totalPriceBeforeDiscount < DISCOUNT_APPLY_STANDARD) {
@@ -29,6 +25,10 @@ public class Discount {
         int specialDiscountPrice = calculateSpecialDiscountPrice(reservationDate);
 
         return new Discount(ddayDiscountPrice, dayOfWeekDiscountPrice, specialDiscountPrice);
+    }
+
+    private static Discount noneDiscount() {
+        return new Discount(0, 0, 0);
     }
 
     private static int calculateSpecialDiscountPrice(ReservationDate reservationDate) {
