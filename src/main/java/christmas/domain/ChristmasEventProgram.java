@@ -23,43 +23,42 @@ public class ChristmasEventProgram {
 
     public void run() {
         ReservationDate reservationDate = reserveVisitDate();
-        OrderMenus orderMenus = orderMenus();
+        OrderMenus orderMenus = reserveMenus();
 
-        // 예약정보 출력
+        showReservationInfo(reservationDate, orderMenus);
+        showBenefitsInfo(reservationDate, orderMenus);
+    }
+
+    private ReservationDate reserveVisitDate() {
+        while (true) {
+            try {
+                int date = inputView.readReservationDate();
+                return new ReservationDate(date);
+            } catch (IllegalArgumentException exception) {
+                outputView.printErrorMessage(exception);
+            }
+        }
+    }
+
+    private OrderMenus reserveMenus() {
+        while (true) {
+            try {
+                List<OrderMenuDto> orderMenuDtos = inputView.readOrderMenus();
+                List<OrderMenu> orderMenus = orderMenuDtos.stream()
+                        .map(OrderMenuDto::toOrderMenu)
+                        .toList();
+
+                return new OrderMenus(orderMenus);
+            } catch (IllegalArgumentException exception) {
+                outputView.printErrorMessage(exception);
+            }
+        }
+    }
+
+    private void showReservationInfo(ReservationDate reservationDate, OrderMenus orderMenus) {
         printBenefitsInfoMessage(reservationDate);
         printOrderMenusInfo(orderMenus);
         printTotalPriceBeforeDiscountInfo(orderMenus.calculateTotalPrice());
-
-        Optional<GiftMenu> giftMenu = checkGiftMenu(orderMenus);
-        Discount discount = checkDiscount(orderMenus, reservationDate, giftMenu);
-        Benefits benefits = new Benefits(discount, giftMenu);
-
-        printAfterAppliedDiscountPrice(orderMenus, benefits);
-        checkIssuedBadge(benefits);
-    }
-
-    private void checkIssuedBadge(Benefits benefits) {
-        Badge badge = Badge.issue(benefits.getTotalBenefitPrice());
-        outputView.println(messageConverter.convertEventBadgeInfoMessage(badge));
-    }
-
-    private void printAfterAppliedDiscountPrice(OrderMenus orderMenus, Benefits benefits) {
-        outputView.println(
-                messageConverter.convertAfterAppliedDiscountPrice(orderMenus.calculateTotalPrice(), benefits.getTotalDiscountPrice()));
-    }
-
-    private Discount checkDiscount(OrderMenus orderMenus, ReservationDate reservationDate, Optional<GiftMenu> giftMenu) {
-        Discount discount = Discount.calculateDiscountPrice(orderMenus, reservationDate, 10_000);
-        outputView.println(
-                messageConverter.covertBenefitsInfoMessage(discount, reservationDate.isWeekends(), giftMenu));
-        return discount;
-    }
-
-    private Optional<GiftMenu> checkGiftMenu(OrderMenus orderMenus) {
-        Optional<GiftMenu> giftMenu = receiveGiftMenu(orderMenus, 120_000);
-        printGiftMenuInfo(giftMenu);
-
-        return giftMenu;
     }
 
     private void printBenefitsInfoMessage(ReservationDate reservationDate) {
@@ -74,8 +73,20 @@ public class ChristmasEventProgram {
         outputView.println(messageConverter.convertTotalPriceBeforeDiscountInfoMessage(totalPriceBeforeDiscount));
     }
 
-    private void printGiftMenuInfo(Optional<GiftMenu> giftMenu) {
+    private void showBenefitsInfo(ReservationDate reservationDate, OrderMenus orderMenus) {
+        Optional<GiftMenu> giftMenu = checkGiftMenu(orderMenus);
+        Discount discount = checkDiscount(orderMenus, reservationDate, giftMenu);
+        Benefits benefits = new Benefits(discount, giftMenu);
+
+        printAfterAppliedDiscountPrice(orderMenus, benefits);
+        checkIssuedBadge(benefits);
+    }
+
+    private Optional<GiftMenu> checkGiftMenu(OrderMenus orderMenus) {
+        Optional<GiftMenu> giftMenu = receiveGiftMenu(orderMenus, 120_000);
         outputView.println(messageConverter.convertGiftMenuInfoMessage(giftMenu));
+
+        return giftMenu;
     }
 
     private Optional<GiftMenu> receiveGiftMenu(OrderMenus orderMenus, int standardPrice) {
@@ -87,29 +98,20 @@ public class ChristmasEventProgram {
         return giftMenu;
     }
 
-    private ReservationDate reserveVisitDate() {
-        while (true) {
-            try {
-                int date = inputView.readReservationDate();
-                return new ReservationDate(date);
-            } catch (IllegalArgumentException exception) {
-                outputView.printErrorMessage(exception);
-            }
-        }
+    private Discount checkDiscount(OrderMenus orderMenus, ReservationDate reservationDate, Optional<GiftMenu> giftMenu) {
+        Discount discount = Discount.calculateDiscountPrice(orderMenus, reservationDate, 10_000);
+        outputView.println(
+                messageConverter.covertBenefitsInfoMessage(discount, reservationDate.isWeekends(), giftMenu));
+        return discount;
     }
 
-    private OrderMenus orderMenus() {
-        while (true) {
-            try {
-                List<OrderMenuDto> orderMenuDtos = inputView.readOrderMenus();
-                List<OrderMenu> orderMenus = orderMenuDtos.stream()
-                        .map(OrderMenuDto::toOrderMenu)
-                        .toList();
-                return new OrderMenus(orderMenus);
-            } catch (IllegalArgumentException exception) {
-                outputView.printErrorMessage(exception);
-            }
-        }
+    private void printAfterAppliedDiscountPrice(OrderMenus orderMenus, Benefits benefits) {
+        outputView.println(
+                messageConverter.convertAfterAppliedDiscountPrice(orderMenus.calculateTotalPrice(), benefits.getTotalDiscountPrice()));
     }
 
+    private void checkIssuedBadge(Benefits benefits) {
+        Badge badge = Badge.issue(benefits.getTotalBenefitPrice());
+        outputView.println(messageConverter.convertEventBadgeInfoMessage(badge));
+    }
 }
