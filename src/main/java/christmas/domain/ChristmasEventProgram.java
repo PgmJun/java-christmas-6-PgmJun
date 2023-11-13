@@ -99,7 +99,7 @@ public class ChristmasEventProgram {
     }
 
     private Discount checkDiscount(OrderMenus orderMenus, ReservationDate reservationDate, Optional<GiftMenu> giftMenu) {
-        Discount discount = Discount.calculateDiscountPrice(orderMenus, reservationDate, 10_000);
+        Discount discount = Discount.calculateFrom(orderMenus, reservationDate, 10_000);
         outputView.println(
                 messageConverter.covertBenefitsInfoMessage(discount, reservationDate.isWeekends(), giftMenu));
         return discount;

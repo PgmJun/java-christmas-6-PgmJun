@@ -16,8 +16,8 @@ public class Discount {
         return new Discount(0, 0, 0);
     }
 
-    public static Discount calculateDiscountPrice(OrderMenus orderMenus, ReservationDate reservationDate,
-                                            int discountApplyStandard) {
+    public static Discount calculateFrom(OrderMenus orderMenus, ReservationDate reservationDate,
+                                         int discountApplyStandard) {
         int totalPriceBeforeDiscount = orderMenus.calculateTotalPrice();
         if (totalPriceBeforeDiscount < discountApplyStandard) {
             return Discount.noneDiscount();
