@@ -49,7 +49,7 @@ public class ChristmasEventProgram {
     }
 
     private Discount checkDiscount(OrderMenus orderMenus, ReservationDate reservationDate, Optional<GiftMenu> giftMenu) {
-        Discount discount = calculateDiscountPrice(orderMenus, reservationDate, 10_000);
+        Discount discount = Discount.calculateDiscountPrice(orderMenus, reservationDate, 10_000);
         outputView.println(
                 messageConverter.covertBenefitsInfoMessage(discount, reservationDate.isWeekends(), giftMenu));
         return discount;
@@ -64,37 +64,6 @@ public class ChristmasEventProgram {
 
     private void printBenefitsInfoMessage(ReservationDate reservationDate) {
         outputView.println(messageConverter.convertBenefitsInfoMessage(reservationDate.getDate()));
-    }
-
-    private Discount calculateDiscountPrice(OrderMenus orderMenus, ReservationDate reservationDate,
-                                            int discountApplyStandard) {
-        int totalPriceBeforeDiscount = orderMenus.calculateTotalPrice();
-        if (totalPriceBeforeDiscount < discountApplyStandard) {
-            return Discount.noneDiscount();
-        }
-
-        int ddayDiscountPrice = calculateDdayDiscountPrice(reservationDate, totalPriceBeforeDiscount);
-        int dayOfWeekDiscountPrice = calculateDayOfWeekDiscountPrice(reservationDate, orderMenus);
-        int specialDiscountPrice = calculateSpecialDiscountPrice(reservationDate);
-
-        return new Discount(ddayDiscountPrice, dayOfWeekDiscountPrice, specialDiscountPrice);
-    }
-
-    private int calculateSpecialDiscountPrice(ReservationDate reservationDate) {
-        int specialDiscountPrice = 0;
-        if (reservationDate.isSpecialDay()) {
-            specialDiscountPrice = 1_000;
-        }
-
-        return specialDiscountPrice;
-    }
-
-    private int calculateDayOfWeekDiscountPrice(ReservationDate reservationDate, OrderMenus orderMenus) {
-        return orderMenus.calculateDayOfWeekDiscountPrice(reservationDate.isWeekends());
-    }
-
-    private int calculateDdayDiscountPrice(ReservationDate reservationDate, int totalPriceBeforeDiscount) {
-        return reservationDate.calculateChristmasDdayDiscountPrice();
     }
 
     private void printOrderMenusInfo(OrderMenus orderMenus) {
