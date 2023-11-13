@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InputView {
+    private static final String ORDER_MENU_SEPARATOR = ",";
+    private static final String MENU_NAME_AND_AMOUNT_SEPARATOR = "-";
 
     public int readReservationDate() {
         System.out.println("안녕하세요! 우테코 식당 12월 이벤트 플래너입니다.\n12월 중 식당 예상 방문 날짜는 언제인가요? (숫자만 입력해 주세요!)");
@@ -22,8 +24,8 @@ public class InputView {
         Validator.validateOrderMenusFormat(orderMenus);
 
         List<OrderMenuDto> orderMenuDtos = new ArrayList<>();
-        for (String orderMenu : orderMenus.split(",")) {
-            String[] orderMenuValues = orderMenu.split("-");
+        for (String orderMenu : orderMenus.split(ORDER_MENU_SEPARATOR)) {
+            String[] orderMenuValues = orderMenu.split(MENU_NAME_AND_AMOUNT_SEPARATOR);
             orderMenuDtos.add(new OrderMenuDto(orderMenuValues[0], Integer.parseInt(orderMenuValues[1])));
         }
         return orderMenuDtos;
