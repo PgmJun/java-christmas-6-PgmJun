@@ -2,6 +2,7 @@ package christmas.view.converter;
 
 import christmas.domain.Badge;
 import christmas.domain.Discount;
+import christmas.domain.GiftMenu;
 import christmas.domain.OrderMenu;
 import christmas.domain.OrderMenus;
 import java.text.DecimalFormat;
@@ -32,7 +33,7 @@ public class ChristmasEventMessageConverter {
         return totalPriceBeforeDiscountInfoMessage.toString();
     }
 
-    public String convertGiftMenuInfoMessage(Optional<OrderMenu> giftMenu) {
+    public String convertGiftMenuInfoMessage(Optional<GiftMenu> giftMenu) {
         StringBuilder giftMenuInfoMessage = new StringBuilder();
         giftMenuInfoMessage.append("<증정 메뉴>\n");
 
@@ -45,7 +46,7 @@ public class ChristmasEventMessageConverter {
         return giftMenuInfoMessage.toString();
     }
 
-    public String covertBenefitsInfoMessage(Discount discount, boolean isWeekends, Optional<OrderMenu> giftMenu) {
+    public String covertBenefitsInfoMessage(Discount discount, boolean isWeekends, Optional<GiftMenu> giftMenu) {
         StringBuilder benefitsInfoMessage = new StringBuilder();
         benefitsInfoMessage.append("<혜택 내역>\n");
         if (discount.isDiscountApplied() || giftMenu.isPresent()) {
@@ -61,7 +62,7 @@ public class ChristmasEventMessageConverter {
         return benefitsInfoMessage.toString();
     }
 
-    private String createDiscountInfoMessage(Discount discount, boolean isWeekends, Optional<OrderMenu> giftMenu,
+    private String createDiscountInfoMessage(Discount discount, boolean isWeekends, Optional<GiftMenu> giftMenu,
                                              StringBuilder benefitsInfoMessage) {
         if (discount.getDdayDiscountPrice() > 0) {
             benefitsInfoMessage.append(
@@ -84,7 +85,7 @@ public class ChristmasEventMessageConverter {
     }
 
     private void addTotalDiscountPriceInfo(Discount discount, StringBuilder benefitsInfoMessage,
-                                           Optional<OrderMenu> giftMenu) {
+                                           Optional<GiftMenu> giftMenu) {
         int totalDiscountPrice = discount.getTotalDiscountPrice();
         if (giftMenu.isPresent()) {
             totalDiscountPrice += giftMenu.get().getTotalPrice();

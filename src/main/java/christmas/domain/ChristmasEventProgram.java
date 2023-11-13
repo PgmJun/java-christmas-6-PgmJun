@@ -31,7 +31,7 @@ public class ChristmasEventProgram {
 
         printTotalPriceBeforeDiscountInfo(orderMenus.calculateTotalPrice());
 
-        Optional<OrderMenu> giftMenu = receiveGiftMenuWhenOverStandardPrice(orderMenus, 120_000);
+        Optional<GiftMenu> giftMenu = receiveGiftMenu(orderMenus, 120_000);
         printGiftMenuInfo(giftMenu);
 
         Discount discount = calculateDiscountPrice(orderMenus, reservationDate, 10_000);
@@ -46,7 +46,7 @@ public class ChristmasEventProgram {
         outputView.println(messageConverter.convertEventBadgeInfoMessage(badge));
     }
 
-    private int calculateTotalBenefitPrice(Discount discount, Optional<OrderMenu> giftMenu) {
+    private int calculateTotalBenefitPrice(Discount discount, Optional<GiftMenu> giftMenu) {
         int totalDiscountPrice = discount.getTotalDiscountPrice();
         if (giftMenu.isPresent()) {
             totalDiscountPrice += giftMenu.get().getTotalPrice();
@@ -98,14 +98,14 @@ public class ChristmasEventProgram {
         outputView.println(messageConverter.convertTotalPriceBeforeDiscountInfoMessage(totalPriceBeforeDiscount));
     }
 
-    private void printGiftMenuInfo(Optional<OrderMenu> giftMenu) {
+    private void printGiftMenuInfo(Optional<GiftMenu> giftMenu) {
         outputView.println(messageConverter.convertGiftMenuInfoMessage(giftMenu));
     }
 
-    private Optional<OrderMenu> receiveGiftMenuWhenOverStandardPrice(OrderMenus orderMenus, int standardPrice) {
-        Optional<OrderMenu> giftMenu = Optional.empty();
+    private Optional<GiftMenu> receiveGiftMenu(OrderMenus orderMenus, int standardPrice) {
+        Optional<GiftMenu> giftMenu = Optional.empty();
         if (orderMenus.calculateTotalPrice() > standardPrice) {
-            giftMenu = Optional.of(new OrderMenu(Menu.샴페인.name(), 1));
+            giftMenu = Optional.of(new GiftMenu(Menu.샴페인.name(), 1));
             orderMenus.receiveGiftMenu(giftMenu.get());
         }
         return giftMenu;
