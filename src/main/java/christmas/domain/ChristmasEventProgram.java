@@ -63,8 +63,8 @@ public class ChristmasEventProgram {
 
     private void showBenefitsInfo(ReservationDate reservationDate, OrderMenus orderMenus) {
         Optional<GiftMenu> giftMenu = checkGiftMenu(orderMenus);
-        Discount discount = checkDiscount(orderMenus, reservationDate, giftMenu);
-        Benefits benefits = new Benefits(discount, giftMenu);
+        Discount discount = checkDiscount(orderMenus, reservationDate);
+        Benefits benefits = checkBenefits(reservationDate, discount, giftMenu);
 
         printAfterAppliedDiscountPrice(orderMenus, benefits);
         checkIssuedBadge(benefits);
@@ -77,11 +77,17 @@ public class ChristmasEventProgram {
         return giftMenu;
     }
 
-    private Discount checkDiscount(OrderMenus orderMenus, ReservationDate reservationDate, Optional<GiftMenu> giftMenu) {
+    private Discount checkDiscount(OrderMenus orderMenus, ReservationDate reservationDate) {
         Discount discount = Discount.calculateFrom(orderMenus, reservationDate);
-        outputView.println(
-                messageConverter.covertBenefitsInfoMessage(discount, reservationDate.isWeekends(), giftMenu));
+
         return discount;
+    }
+
+    private Benefits checkBenefits(ReservationDate reservationDate, Discount discount, Optional<GiftMenu> giftMenu) {
+        Benefits benefits = new Benefits(discount, giftMenu);
+        outputView.println(messageConverter.covertBenefitsInfoMessage(benefits, reservationDate.isWeekends()));
+
+        return benefits;
     }
 
     private void printAfterAppliedDiscountPrice(OrderMenus orderMenus, Benefits benefits) {

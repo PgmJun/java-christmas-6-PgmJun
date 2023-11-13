@@ -48,13 +48,6 @@ public class Discount {
         return reservationDate.calculateChristmasDdayDiscountPrice();
     }
 
-    public boolean isDiscountApplied() {
-        if(ddayDiscountPrice == 0 && dayOfWeekDiscountPrice == 0 && specialDiscountPrice == 0) {
-            return false;
-        }
-        return true;
-    }
-
     public int getTotalDiscountPrice() {
         return ddayDiscountPrice + dayOfWeekDiscountPrice + specialDiscountPrice;
     }

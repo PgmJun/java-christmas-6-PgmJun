@@ -1,7 +1,7 @@
 package christmas.view.converter;
 
 import christmas.domain.Badge;
-import christmas.domain.Discount;
+import christmas.domain.Benefits;
 import christmas.domain.GiftMenu;
 import christmas.domain.OrderMenu;
 import christmas.domain.OrderMenus;
@@ -47,11 +47,11 @@ public class ChristmasEventMessageConverter {
         return giftMenuInfoMessage.toString();
     }
 
-    public String covertBenefitsInfoMessage(Discount discount, boolean isWeekends, Optional<GiftMenu> giftMenu) {
+    public String covertBenefitsInfoMessage(Benefits benefits, boolean isWeekends) {
         StringBuilder benefitsInfoMessage = new StringBuilder();
         benefitsInfoMessage.append("<혜택 내역>\n");
-        if (discount.isDiscountApplied() || giftMenu.isPresent()) {
-            return createDiscountInfoMessage(discount, isWeekends, giftMenu, benefitsInfoMessage);
+        if (benefits.isBeneficiary()) {
+            return createDiscountInfoMessage(benefits, isWeekends, benefitsInfoMessage);
         }
         return createNoneDiscountInfoMessage(benefitsInfoMessage);
     }
@@ -63,37 +63,31 @@ public class ChristmasEventMessageConverter {
         return benefitsInfoMessage.toString();
     }
 
-    private String createDiscountInfoMessage(Discount discount, boolean isWeekends, Optional<GiftMenu> giftMenu,
+    private String createDiscountInfoMessage(Benefits benefits, boolean isWeekends,
                                              StringBuilder benefitsInfoMessage) {
-        if (discount.getDdayDiscountPrice() > 0) {
+        if (benefits.isDdayDiscountApplied()) {
             benefitsInfoMessage.append(
-                    String.format("크리스마스 디데이 할인: %s", discountFormat.format(discount.getDdayDiscountPrice())));
+                    String.format("크리스마스 디데이 할인: %s", discountFormat.format(benefits.getDdayDiscountPrice())));
         }
-        if (discount.getDayOfWeekDiscountPrice() > 0) {
+        if (benefits.isDayOfWeekDiscountApplied()) {
             benefitsInfoMessage.append(String.format("%s 할인 : %s", createWeekendsOrWeekDaysInfoMessage(isWeekends),
-                    discountFormat.format(discount.getDayOfWeekDiscountPrice())));
+                    discountFormat.format(benefits.getDayOfWeekDiscountPrice())));
         }
-        if (discount.getSpecialDiscountPrice() > 0) {
+        if (benefits.isSpecialDiscountApplied()) {
             benefitsInfoMessage.append(
-                    String.format("특별 할인: %s", discountFormat.format(discount.getSpecialDiscountPrice())));
+                    String.format("특별 할인: %s", discountFormat.format(benefits.getSpecialDiscountPrice())));
         }
-        if (giftMenu.isPresent()) {
+        if (benefits.isExistGiftMenu()) {
             benefitsInfoMessage.append(
-                    String.format("증정 이벤트: %s\n", discountFormat.format(giftMenu.get().getTotalPrice())));
+                    String.format("증정 이벤트: %s\n", discountFormat.format(benefits.getGiftMenuPrice())));
         }
-        addTotalDiscountPriceInfo(discount, benefitsInfoMessage, giftMenu);
+        addTotalBenefitsPriceInfo(benefits, benefitsInfoMessage);
         return benefitsInfoMessage.toString();
     }
 
-    private void addTotalDiscountPriceInfo(Discount discount, StringBuilder benefitsInfoMessage,
-                                           Optional<GiftMenu> giftMenu) {
-        int totalDiscountPrice = discount.getTotalDiscountPrice();
-        if (giftMenu.isPresent()) {
-            totalDiscountPrice += giftMenu.get().getTotalPrice();
-        }
-
+    private void addTotalBenefitsPriceInfo(Benefits benefits, StringBuilder benefitsInfoMessage) {
         benefitsInfoMessage.append("<총혜택 금액>\n");
-        benefitsInfoMessage.append(discountFormat.format(totalDiscountPrice));
+        benefitsInfoMessage.append(discountFormat.format(benefits.getTotalBenefitPrice()));
     }
 
     private String createWeekendsOrWeekDaysInfoMessage(boolean isWeekends) {
