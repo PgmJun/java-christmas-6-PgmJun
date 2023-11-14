@@ -4,7 +4,7 @@ import christmas.global.message.ErrorMessage;
 import java.util.List;
 
 public class ReservationDate {
-    private int date;
+    private final int date;
 
     private final static List<Integer> weekends = List.of(1, 2, 8, 9, 15, 16, 22, 23, 29, 30);
     private final static List<Integer> specialDay = List.of(3, 10, 17, 24, 25, 31);
