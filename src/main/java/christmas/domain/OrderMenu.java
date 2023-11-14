@@ -1,5 +1,7 @@
 package christmas.domain;
 
+import christmas.domain.menu.Menu;
+import christmas.domain.menu.MenuType;
 import christmas.global.message.ErrorMessage;
 import java.util.NoSuchElementException;
 
@@ -38,7 +40,7 @@ public class OrderMenu {
         return menu;
     }
 
-    public String getMenuType() {
+    public MenuType getMenuType() {
         return menu.getType();
     }
 

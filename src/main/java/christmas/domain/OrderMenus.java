@@ -1,5 +1,6 @@
 package christmas.domain;
 
+import christmas.domain.menu.MenuType;
 import christmas.global.message.ErrorMessage;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -46,7 +47,7 @@ public class OrderMenus {
         int orderMenuCount = orderMenus.size();
         long drinkMenuCount = orderMenus.stream()
                 .map(OrderMenu::getMenu)
-                .filter(menu -> menu.getType().equals("음료"))
+                .filter(menu -> menu.getType().equals(MenuType.DRINK))
                 .count();
 
         if (orderMenuCount == drinkMenuCount) {
@@ -69,11 +70,11 @@ public class OrderMenus {
         List<OrderMenu> menus = new ArrayList<>();
         if (isWeekends) {
             menus = orderMenus.stream()
-                    .filter(orderMenu -> orderMenu.getMenuType().equals("메인"))
+                    .filter(orderMenu -> orderMenu.getMenuType().equals(MenuType.MAIN))
                     .toList();
         } else if (!isWeekends) {
             menus = orderMenus.stream()
-                    .filter(orderMenu -> orderMenu.getMenuType().equals("디저트"))
+                    .filter(orderMenu -> orderMenu.getMenuType().equals(MenuType.DESSERT))
                     .toList();
         }
 

@@ -1,5 +1,6 @@
 package christmas.domain;
 
+import christmas.domain.menu.Menu;
 import java.util.Optional;
 
 public class GiftMenu extends OrderMenu {

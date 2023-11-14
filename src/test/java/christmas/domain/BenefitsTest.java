@@ -1,5 +1,6 @@
 package christmas.domain;
 
+import christmas.domain.menu.Menu;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;

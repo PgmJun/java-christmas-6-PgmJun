@@ -1,5 +1,6 @@
 package christmas.domain;
 
+import christmas.domain.menu.Menu;
 import christmas.global.message.ErrorMessage;
 import java.util.ArrayList;
 import java.util.List;
