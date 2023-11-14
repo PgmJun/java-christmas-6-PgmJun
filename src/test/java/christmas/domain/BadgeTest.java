@@ -20,6 +20,7 @@ class BadgeTest {
 
     static Stream<Arguments> validBadgeIssueParameters() {
         return Stream.of(
+                Arguments.of(-3000, Badge.NONE),
                 Arguments.of(0, Badge.NONE),
                 Arguments.of(4000, Badge.NONE),
                 Arguments.of(7000, Badge.STAR),

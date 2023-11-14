@@ -25,7 +25,7 @@ public enum Badge {
                 .filter(badge -> totalBenefitPrice >= badge.minMatchingCondition)
                 .filter(badge -> totalBenefitPrice <= badge.maxMatchingCondition)
                 .findFirst()
-                .get();
+                .orElse(Badge.NONE);
     }
 
     public String getName() {
