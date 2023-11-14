@@ -9,6 +9,9 @@ public class OrderMenus {
 
     private final List<OrderMenu> orderMenus;
 
+    private static final int MIN_ORDER_AMOUNT = 1;
+    private static final int MAX_ORDER_AMOUNT = 20;
+
     public OrderMenus(List<OrderMenu> orderMenus) {
         validate(orderMenus);
         this.orderMenus = orderMenus;
@@ -25,7 +28,7 @@ public class OrderMenus {
                 .mapToInt(OrderMenu::getAmount)
                 .sum();
 
-        if (totalOrderMenuAmount < 1 || totalOrderMenuAmount > 20) {
+        if (totalOrderMenuAmount < MIN_ORDER_AMOUNT || totalOrderMenuAmount > MAX_ORDER_AMOUNT) {
             throw new IllegalArgumentException(ErrorMessage.INVALID_ORDER.getText());
         }
     }
