@@ -26,19 +26,6 @@ public class ReservationDate {
         }
     }
 
-    public int calculateChristmasDdayDiscountPrice() {
-        if (date > 25) {
-            return 0;
-        }
-        int discountPrice = 1_000;
-        int discountUnit = 100;
-        for (int i = 1; i < date; i++) {
-            discountPrice += discountUnit;
-        }
-
-        return discountPrice;
-    }
-
     public String checkWeekdayOrWeekend() {
         if(weekends.contains(date)) {
             return WEEKEND;

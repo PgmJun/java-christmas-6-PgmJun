@@ -10,6 +10,8 @@ public class Discount {
 
     private static final int DISCOUNT_APPLY_STANDARD = 10_000;
     private static final int DAY_OF_WEEKS_DISCOUNT_PRICE = 2_023;
+    private static final int D_DAY_DISCOUNT_DEFAULT_PRICE = 1_000;
+    private static final int D_DAY_DISCOUNT_UNIT = 100;
     private static final int SPECIAL_DISCOUNT_PRICE = 1_000;
 
     public Discount(int ddayDiscountPrice, int dayOfWeekDiscountPrice, int specialDiscountPrice) {
@@ -24,7 +26,7 @@ public class Discount {
             return Discount.noneDiscount();
         }
 
-        int ddayDiscountPrice = calculateDdayDiscountPrice(reservationDate);
+        int ddayDiscountPrice = calculateChristmasDdayDiscountPrice(reservationDate);
         int dayOfWeekDiscountPrice = calculateDayOfWeekDiscountPrice(orderMenus, reservationDate);
         int specialDiscountPrice = calculateSpecialDiscountPrice(reservationDate);
 
@@ -36,8 +38,17 @@ public class Discount {
     }
 
 
-    private static int calculateDdayDiscountPrice(ReservationDate reservationDate) {
-        return reservationDate.calculateChristmasDdayDiscountPrice();
+    private static int calculateChristmasDdayDiscountPrice(ReservationDate reservationDate) {
+        int date = reservationDate.getDate();
+        if (date > 25) {
+            return 0;
+        }
+
+        int discountPrice = D_DAY_DISCOUNT_DEFAULT_PRICE;
+        for (int i = 1; i < date; i++) {
+            discountPrice += D_DAY_DISCOUNT_UNIT;
+        }
+        return discountPrice;
     }
 
     private static int calculateDayOfWeekDiscountPrice(OrderMenus orderMenus, ReservationDate reservationDate) {
