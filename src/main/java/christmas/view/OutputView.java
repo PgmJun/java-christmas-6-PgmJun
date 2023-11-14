@@ -87,13 +87,6 @@ public class OutputView {
         printEnter();
     }
 
-    private String createWeekendsOrWeekDaysInfoMessage(boolean isWeekends) {
-        if (isWeekends) {
-            return "주말";
-        }
-        return "평일";
-    }
-
     public void printAfterAppliedDiscountPrice(int totalPrice, int totalBenefitPrice) {
         println("<할인 후 예상 결제 금액>");
         println(priceFormat.format(totalPrice - totalBenefitPrice));
