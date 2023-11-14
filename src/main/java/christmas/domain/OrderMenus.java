@@ -21,10 +21,9 @@ public class OrderMenus {
     }
 
     private void validateOrderMenuAmount(List<OrderMenu> orderMenus) {
-        int totalOrderMenuAmount = 0;
-        for (OrderMenu orderMenu : orderMenus) {
-            totalOrderMenuAmount += orderMenu.getAmount();
-        }
+        int totalOrderMenuAmount = orderMenus.stream()
+                .mapToInt(OrderMenu::getAmount)
+                .sum();
 
         if (totalOrderMenuAmount < 1 || totalOrderMenuAmount > 20) {
             throw new IllegalArgumentException(ErrorMessage.INVALID_ORDER.getText());
@@ -58,27 +57,6 @@ public class OrderMenus {
         return orderMenus.stream()
                 .map(OrderMenu::getTotalPrice)
                 .reduce(0, Integer::sum);
-    }
-
-    public int calculateDayOfWeekDiscountPrice(ReservationDate reservationDate) {
-        int discountPrice = 2023;
-        return (int) (discountPrice * getDayOfWeekDiscountCount(reservationDate));
-    }
-
-    private long getDayOfWeekDiscountCount(ReservationDate reservationDate) {
-        return orderMenus.stream()
-                .filter(orderMenu -> orderMenu.getMenuType().equals(getMenuTypeForDayOfWeek(reservationDate)))
-                .mapToInt(OrderMenu::getAmount)
-                .sum();
-    }
-
-    private MenuType getMenuTypeForDayOfWeek(ReservationDate reservationDate) {
-        String dayOfWeek = reservationDate.checkWeekdayOrWeekend();
-
-        if (dayOfWeek.equals(ReservationDate.WEEKEND)) {
-            return MenuType.MAIN;
-        }
-        return MenuType.DESSERT;
     }
 
     public List<OrderMenu> getOrderMenus() {

@@ -1,5 +1,7 @@
 package christmas.domain;
 
+import christmas.domain.menu.MenuType;
+
 public class Discount {
 
     private final int ddayDiscountPrice;
@@ -7,6 +9,8 @@ public class Discount {
     private final int specialDiscountPrice;
 
     private static final int DISCOUNT_APPLY_STANDARD = 10_000;
+    private static final int DAY_OF_WEEKS_DISCOUNT_PRICE = 2_023;
+    private static final int SPECIAL_DISCOUNT_PRICE = 1_000;
 
     public Discount(int ddayDiscountPrice, int dayOfWeekDiscountPrice, int specialDiscountPrice) {
         this.ddayDiscountPrice = ddayDiscountPrice;
@@ -21,7 +25,7 @@ public class Discount {
         }
 
         int ddayDiscountPrice = calculateDdayDiscountPrice(reservationDate);
-        int dayOfWeekDiscountPrice = calculateDayOfWeekDiscountPrice(reservationDate, orderMenus);
+        int dayOfWeekDiscountPrice = calculateDayOfWeekDiscountPrice(orderMenus, reservationDate);
         int specialDiscountPrice = calculateSpecialDiscountPrice(reservationDate);
 
         return new Discount(ddayDiscountPrice, dayOfWeekDiscountPrice, specialDiscountPrice);
@@ -31,21 +35,36 @@ public class Discount {
         return new Discount(0, 0, 0);
     }
 
-    private static int calculateSpecialDiscountPrice(ReservationDate reservationDate) {
-        int specialDiscountPrice = 0;
-        if (reservationDate.isSpecialDay()) {
-            specialDiscountPrice = 1_000;
-        }
-
-        return specialDiscountPrice;
-    }
-
-    private static int calculateDayOfWeekDiscountPrice(ReservationDate reservationDate, OrderMenus orderMenus) {
-        return orderMenus.calculateDayOfWeekDiscountPrice(reservationDate);
-    }
 
     private static int calculateDdayDiscountPrice(ReservationDate reservationDate) {
         return reservationDate.calculateChristmasDdayDiscountPrice();
+    }
+
+    private static int calculateDayOfWeekDiscountPrice(OrderMenus orderMenus, ReservationDate reservationDate) {
+        return (int) (DAY_OF_WEEKS_DISCOUNT_PRICE * getDayOfWeekDiscountCount(orderMenus, reservationDate));
+    }
+
+    private static long getDayOfWeekDiscountCount(OrderMenus orderMenus, ReservationDate reservationDate) {
+        return orderMenus.getOrderMenus().stream()
+                .filter(orderMenu -> orderMenu.getMenuType().equals(getDayOfWeeksDiscountMenuType(reservationDate)))
+                .mapToInt(OrderMenu::getAmount)
+                .sum();
+    }
+
+    private static MenuType getDayOfWeeksDiscountMenuType(ReservationDate reservationDate) {
+        if (reservationDate.checkWeekdayOrWeekend().equals(ReservationDate.WEEKEND)) {
+            return MenuType.MAIN;
+        }
+        return MenuType.DESSERT;
+    }
+
+    private static int calculateSpecialDiscountPrice(ReservationDate reservationDate) {
+        int specialDiscountPrice = 0;
+        if (reservationDate.isSpecialDay()) {
+            specialDiscountPrice = SPECIAL_DISCOUNT_PRICE;
+        }
+
+        return specialDiscountPrice;
     }
 
     public int getTotalDiscountPrice() {

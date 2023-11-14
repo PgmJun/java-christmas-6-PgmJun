@@ -34,21 +34,43 @@ class DiscountTest {
     }
 
     @ParameterizedTest
-    @MethodSource("dayOfWeekDiscountParameters")
-    void 입력된_주문_메뉴의_가격이_10000원을_넘고_예약알이_평일이면_디저트_개수_당_2023원이_할인된다(int date, int amount, int expectedValue) {
+    @MethodSource("weekdayDiscountParameters")
+    void 입력된_주문_메뉴의_가격이_10000원을_넘고_예약일이_평일이면_디저트_개수_당_2023원이_할인된다(Menu dessertMenu, int date, int amount,
+                                                                  int expectedValue) {
         ReservationDate reservationDate = new ReservationDate(date);
-        OrderMenus orderMenus = new OrderMenus(List.of(new OrderMenu(Menu.초코케이크.name(), amount)));
+        OrderMenus orderMenus = new OrderMenus(List.of(new OrderMenu(dessertMenu.name(), amount)));
 
         Discount discount = Discount.calculateFrom(orderMenus, reservationDate);
 
         int actualValue = discount.getDayOfWeekDiscountPrice();
         Assertions.assertEquals(expectedValue, actualValue);
     }
-    static Stream<Arguments> dayOfWeekDiscountParameters() {
+
+    static Stream<Arguments> weekdayDiscountParameters() {
         return Stream.of(
-                Arguments.of(4, 1, 2023),
-                Arguments.of(11, 2, 4046),
-                Arguments.of(18, 5, 10115)
+                Arguments.of(Menu.초코케이크, 4, 1, 2023),
+                Arguments.of(Menu.아이스크림, 11, 2, 4046)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("weekendDiscountParameters")
+    void 입력된_주문_메뉴의_가격이_10000원을_넘고_예약일이_주말이면_메인_메뉴_개수_당_2023원이_할인된다(Menu mainMenu, int date, int amount,
+                                                                    int expectedValue) {
+        ReservationDate reservationDate = new ReservationDate(date);
+        OrderMenus orderMenus = new OrderMenus(List.of(new OrderMenu(mainMenu.name(), amount)));
+
+        Discount discount = Discount.calculateFrom(orderMenus, reservationDate);
+        int actualValue = discount.getDayOfWeekDiscountPrice();
+        Assertions.assertEquals(expectedValue, actualValue);
+    }
+
+    static Stream<Arguments> weekendDiscountParameters() {
+        return Stream.of(
+                Arguments.of(Menu.바비큐립, 1, 1, 2023),
+                Arguments.of(Menu.크리스마스파스타, 2, 2, 4046),
+                Arguments.of(Menu.해산물파스타, 8, 5, 10115),
+                Arguments.of(Menu.티본스테이크, 9, 5, 10115)
         );
     }
 
