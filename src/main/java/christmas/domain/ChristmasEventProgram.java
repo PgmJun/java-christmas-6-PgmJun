@@ -2,7 +2,6 @@ package christmas.domain;
 
 import christmas.view.InputView;
 import christmas.view.OutputView;
-import christmas.view.converter.ChristmasEventMessageConverter;
 import christmas.view.dto.OrderMenuDto;
 import java.util.List;
 import java.util.Optional;
@@ -11,13 +10,10 @@ public class ChristmasEventProgram {
 
     private final InputView inputView;
     private final OutputView outputView;
-    private final ChristmasEventMessageConverter messageConverter;
 
-    public ChristmasEventProgram(InputView inputView, OutputView outputView,
-                                 ChristmasEventMessageConverter messageConverter) {
+    public ChristmasEventProgram(InputView inputView, OutputView outputView) {
         this.inputView = inputView;
         this.outputView = outputView;
-        this.messageConverter = messageConverter;
     }
 
 
@@ -56,9 +52,9 @@ public class ChristmasEventProgram {
     }
 
     private void showReservationInfo(ReservationDate reservationDate, OrderMenus orderMenus) {
-        outputView.println(messageConverter.convertBenefitsOfDateMessage(reservationDate));
-        outputView.println(messageConverter.convertOrderMenuInfoMessage(orderMenus));
-        outputView.println(messageConverter.convertTotalPriceBeforeDiscountInfoMessage(orderMenus));
+        outputView.printBenefitsOfDateMessage(reservationDate);
+        outputView.printOrderMenuInfoMessage(orderMenus);
+        outputView.printTotalPriceBeforeDiscountInfoMessage(orderMenus);
     }
 
     private void showBenefitsInfo(ReservationDate reservationDate, OrderMenus orderMenus) {
@@ -72,7 +68,7 @@ public class ChristmasEventProgram {
 
     private Optional<GiftMenu> checkGiftMenu(OrderMenus orderMenus) {
         Optional<GiftMenu> giftMenu = GiftMenu.receive(orderMenus.calculateTotalPrice());
-        outputView.println(messageConverter.convertGiftMenuInfoMessage(giftMenu));
+        outputView.printGiftMenuInfoMessage(giftMenu);
 
         return giftMenu;
     }
@@ -83,18 +79,17 @@ public class ChristmasEventProgram {
 
     private Benefits checkBenefits(ReservationDate reservationDate, Discount discount, Optional<GiftMenu> giftMenu) {
         Benefits benefits = new Benefits(discount, giftMenu);
-        outputView.println(messageConverter.covertBenefitsInfoMessage(benefits, reservationDate.isWeekends()));
-
+        outputView.printBenefitsInfoMessage(benefits, reservationDate.isWeekends());
+        outputView.printTotalBenefitsPriceInfo(benefits);
         return benefits;
     }
 
     private void printAfterAppliedDiscountPrice(OrderMenus orderMenus, Benefits benefits) {
-        outputView.println(
-                messageConverter.convertAfterAppliedDiscountPrice(orderMenus.calculateTotalPrice(), benefits.getTotalDiscountPrice()));
+        outputView.printAfterAppliedDiscountPrice(orderMenus.calculateTotalPrice(), benefits.getTotalDiscountPrice());
     }
 
     private void checkIssuedBadge(Benefits benefits) {
         Badge badge = Badge.issue(benefits.getTotalBenefitPrice());
-        outputView.println(messageConverter.convertEventBadgeInfoMessage(badge));
+        outputView.printEventBadgeInfoMessage(badge);
     }
 }
