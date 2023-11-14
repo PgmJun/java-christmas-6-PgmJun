@@ -39,13 +39,12 @@ public class Discount {
 
 
     private static int calculateChristmasDdayDiscountPrice(ReservationDate reservationDate) {
-        int date = reservationDate.getDate();
-        if (date > 25) {
+        if (reservationDate.isAfterChristmas()) {
             return 0;
         }
 
         int discountPrice = D_DAY_DISCOUNT_DEFAULT_PRICE;
-        for (int i = 1; i < date; i++) {
+        for (int i = 1; i < reservationDate.getDate(); i++) {
             discountPrice += D_DAY_DISCOUNT_UNIT;
         }
         return discountPrice;
