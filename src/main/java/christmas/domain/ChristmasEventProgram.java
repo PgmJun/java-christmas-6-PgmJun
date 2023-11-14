@@ -79,7 +79,7 @@ public class ChristmasEventProgram {
 
     private Benefits checkBenefits(ReservationDate reservationDate, Discount discount, Optional<GiftMenu> giftMenu) {
         Benefits benefits = new Benefits(discount, giftMenu);
-        outputView.printBenefitsInfoMessage(benefits, reservationDate.isWeekends());
+        outputView.printBenefitsInfoMessage(benefits, reservationDate);
         outputView.printTotalBenefitsPriceInfo(benefits);
         return benefits;
     }

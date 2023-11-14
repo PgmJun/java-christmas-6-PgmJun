@@ -8,6 +8,8 @@ public class ReservationDate {
 
     private final static List<Integer> weekends = List.of(1, 2, 8, 9, 15, 16, 22, 23, 29, 30);
     private final static List<Integer> specialDay = List.of(3, 10, 17, 24, 25, 31);
+    public final static String WEEKDAY = "평일";
+    public final static String WEEKEND = "주말";
 
     public ReservationDate(int date) {
         validate(date);
@@ -37,8 +39,11 @@ public class ReservationDate {
         return discountPrice;
     }
 
-    public boolean isWeekends() {
-        return weekends.contains(date);
+    public String checkWeekdayOrWeekend() {
+        if(weekends.contains(date)) {
+            return WEEKEND;
+        }
+        return WEEKDAY;
     }
 
     public boolean isSpecialDay() {

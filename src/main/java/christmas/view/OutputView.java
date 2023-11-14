@@ -46,10 +46,10 @@ public class OutputView {
         printEnter();
     }
 
-    public void printBenefitsInfoMessage(Benefits benefits, boolean isWeekends) {
+    public void printBenefitsInfoMessage(Benefits benefits, ReservationDate reservationDate) {
         println("<혜택 내역>");
         if (benefits.isBeneficiary()) {
-            printBeneficiaryInfoMessage(benefits, isWeekends);
+            printBeneficiaryInfoMessage(benefits, reservationDate.checkWeekdayOrWeekend());
             return;
         }
         printNoneBeneficiaryInfoMessage();
@@ -60,12 +60,12 @@ public class OutputView {
         printEnter();
     }
 
-    private void printBeneficiaryInfoMessage(Benefits benefits, boolean isWeekends) {
+    private void printBeneficiaryInfoMessage(Benefits benefits, String dayOfWeekType) {
         if (benefits.isDdayDiscountApplied()) {
             println(String.format("크리스마스 디데이 할인: %s", discountFormat.format(benefits.getDdayDiscountPrice())));
         }
         if (benefits.isDayOfWeekDiscountApplied()) {
-            println(String.format("%s 할인 : %s", createWeekendsOrWeekDaysInfoMessage(isWeekends),
+            println(String.format("%s 할인 : %s", dayOfWeekType,
                     discountFormat.format(benefits.getDayOfWeekDiscountPrice())));
         }
         if (benefits.isSpecialDiscountApplied()) {

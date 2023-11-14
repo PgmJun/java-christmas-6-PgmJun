@@ -2,7 +2,6 @@ package christmas.domain;
 
 import christmas.domain.menu.MenuType;
 import christmas.global.message.ErrorMessage;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -61,25 +60,25 @@ public class OrderMenus {
                 .reduce(0, Integer::sum);
     }
 
-    public int calculateDayOfWeekDiscountPrice(boolean isWeekends) {
+    public int calculateDayOfWeekDiscountPrice(ReservationDate reservationDate) {
         int discountPrice = 2023;
-        return (int) (discountPrice * getDayOfWeekDiscountCount(isWeekends));
+        return (int) (discountPrice * getDayOfWeekDiscountCount(reservationDate));
     }
 
-    private long getDayOfWeekDiscountCount(boolean isWeekends) {
-        List<OrderMenu> menus = new ArrayList<>();
-        if (isWeekends) {
-            menus = orderMenus.stream()
-                    .filter(orderMenu -> orderMenu.getMenuType().equals(MenuType.MAIN))
-                    .toList();
-        } else if (!isWeekends) {
-            menus = orderMenus.stream()
-                    .filter(orderMenu -> orderMenu.getMenuType().equals(MenuType.DESSERT))
-                    .toList();
-        }
+    private long getDayOfWeekDiscountCount(ReservationDate reservationDate) {
+        return orderMenus.stream()
+                .filter(orderMenu -> orderMenu.getMenuType().equals(getMenuTypeForDayOfWeek(reservationDate)))
+                .mapToInt(OrderMenu::getAmount)
+                .sum();
+    }
 
-        return menus.stream()
-                .mapToInt(OrderMenu::getAmount).sum();
+    private MenuType getMenuTypeForDayOfWeek(ReservationDate reservationDate) {
+        String dayOfWeek = reservationDate.checkWeekdayOrWeekend();
+
+        if (dayOfWeek.equals(ReservationDate.WEEKEND)) {
+            return MenuType.MAIN;
+        }
+        return MenuType.DESSERT;
     }
 
     public List<OrderMenu> getOrderMenus() {

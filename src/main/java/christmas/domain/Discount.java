@@ -41,7 +41,7 @@ public class Discount {
     }
 
     private static int calculateDayOfWeekDiscountPrice(ReservationDate reservationDate, OrderMenus orderMenus) {
-        return orderMenus.calculateDayOfWeekDiscountPrice(reservationDate.isWeekends());
+        return orderMenus.calculateDayOfWeekDiscountPrice(reservationDate);
     }
 
     private static int calculateDdayDiscountPrice(ReservationDate reservationDate) {
