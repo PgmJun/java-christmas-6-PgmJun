@@ -1,7 +1,7 @@
 package christmas.view;
 
 import camp.nextstep.edu.missionutils.Console;
-import christmas.util.Validator;
+import christmas.global.util.Validator;
 import christmas.view.dto.OrderMenuDto;
 import java.util.ArrayList;
 import java.util.List;

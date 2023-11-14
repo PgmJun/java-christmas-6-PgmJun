@@ -1,5 +1,6 @@
 package christmas.domain;
 
+import christmas.global.message.ErrorMessage;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -26,7 +27,7 @@ public class OrderMenus {
         }
 
         if (totalOrderMenuAmount < 1 || totalOrderMenuAmount > 20) {
-            throw new IllegalArgumentException("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
+            throw new IllegalArgumentException(ErrorMessage.INVALID_ORDER.getText());
         }
     }
 
@@ -37,7 +38,7 @@ public class OrderMenus {
                 .count();
 
         if (orderMenuCount != distinctOrderMenuCount) {
-            throw new IllegalArgumentException("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
+            throw new IllegalArgumentException(ErrorMessage.INVALID_ORDER.getText());
         }
     }
 
@@ -49,7 +50,7 @@ public class OrderMenus {
                 .count();
 
         if (orderMenuCount == drinkMenuCount) {
-            throw new IllegalArgumentException("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
+            throw new IllegalArgumentException(ErrorMessage.INVALID_ORDER.getText());
         }
     }
 

@@ -1,10 +1,10 @@
 package christmas.domain;
 
+import christmas.global.message.ErrorMessage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -20,7 +20,7 @@ public class OrderMenusTest {
 
         Assertions.assertThatThrownBy(() -> new OrderMenus(orderMenus))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
+                .hasMessageContaining(ErrorMessage.INVALID_ORDER.getText());
     }
     static Stream<Arguments> invalidOrderMenuAmountParameters() {
         return Stream.of(
@@ -37,7 +37,7 @@ public class OrderMenusTest {
 
         Assertions.assertThatThrownBy(() -> new OrderMenus(orderMenus))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
+                .hasMessageContaining(ErrorMessage.INVALID_ORDER.getText());
     }
 
     static Stream<Arguments> duplicationMenuParameters() {
@@ -55,7 +55,7 @@ public class OrderMenusTest {
 
         Assertions.assertThatThrownBy(() -> new OrderMenus(orderMenus))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
+                .hasMessageContaining(ErrorMessage.INVALID_ORDER.getText());
     }
 
     @ParameterizedTest
@@ -68,7 +68,7 @@ public class OrderMenusTest {
 
         Assertions.assertThatThrownBy(() -> new OrderMenus(orderMenus))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
+                .hasMessageContaining(ErrorMessage.INVALID_ORDER.getText());
     }
 
     @ParameterizedTest

@@ -1,5 +1,8 @@
 package christmas.domain;
 
+import christmas.global.message.ErrorMessage;
+import java.util.NoSuchElementException;
+
 public class OrderMenu {
     private final Menu menu;
     private final int amount;
@@ -16,14 +19,14 @@ public class OrderMenu {
     }
 
     private void validateIsAmountZero(int amount) {
-        if(amount == 0) {
-            throw new IllegalArgumentException("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
+        if (amount == 0) {
+            throw new IllegalArgumentException(ErrorMessage.INVALID_ORDER.getText());
         }
     }
 
     private void validateMenuName(String name) {
-        if(!Menu.isExistMenu(name)) {
-            throw new IllegalArgumentException("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
+        if (!Menu.isExistMenu(name)) {
+            throw new NoSuchElementException(ErrorMessage.INVALID_ORDER.getText());
         }
     }
 

@@ -1,5 +1,6 @@
 package christmas.domain;
 
+import christmas.global.message.ErrorMessage;
 import java.util.List;
 
 public class ReservationDate {
@@ -19,7 +20,7 @@ public class ReservationDate {
 
     private void validateDateRange(int date) {
         if (date < 1 || date > 31) {
-            throw new IllegalArgumentException("[ERROR] 유효하지 않은 날짜입니다. 다시 입력해 주세요.");
+            throw new IllegalArgumentException(ErrorMessage.INVALID_DATE.getText());
         }
     }
 

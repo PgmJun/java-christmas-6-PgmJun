@@ -1,7 +1,7 @@
 package christmas.domain;
 
+import christmas.global.message.ErrorMessage;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -12,7 +12,7 @@ public class ReservationDateTest {
     void 방문일자가_1이상_31이하의_숫자가_아닌_경우_예외발생(int date) {
         Assertions.assertThatThrownBy(() -> new ReservationDate(date))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("[ERROR] 유효하지 않은 날짜입니다. 다시 입력해 주세요.");
+                .hasMessageContaining(ErrorMessage.INVALID_DATE.getText());
     }
 
     @ParameterizedTest

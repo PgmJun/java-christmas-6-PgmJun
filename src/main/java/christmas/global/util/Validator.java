@@ -1,5 +1,6 @@
-package christmas.util;
+package christmas.global.util;
 
+import christmas.global.message.ErrorMessage;
 import java.util.regex.Pattern;
 
 public class Validator {
@@ -9,16 +10,14 @@ public class Validator {
 
     public static void validateReservationDateFormat(String value) {
         if (!INT_FORMAT.matcher(value).matches()) {
-            throw new IllegalArgumentException("[ERROR] 유효하지 않은 날짜입니다. 다시 입력해 주세요.");
+            throw new IllegalArgumentException(ErrorMessage.INVALID_DATE.getText());
         }
     }
 
     public static void validateOrderMenusFormat(String value) {
         if (!ORDER_MENUS_FORMAT.matcher(value).matches()) {
-            throw new IllegalArgumentException("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
+            throw new IllegalArgumentException(ErrorMessage.INVALID_ORDER.getText());
         }
     }
-
-
 }
 
