@@ -79,7 +79,11 @@ public class OutputView {
 
     public void printTotalBenefitsPriceInfo(Benefits benefits) {
         println("<총혜택 금액>");
-        println(discountFormat.format(benefits.getTotalBenefitPrice()));
+        if(benefits.getTotalBenefitPrice() > 0) {
+            println(discountFormat.format(benefits.getTotalBenefitPrice()));
+        } else if(benefits.getTotalBenefitPrice() == 0) {
+            println(priceFormat.format(0));
+        }
         printEnter();
     }
 
