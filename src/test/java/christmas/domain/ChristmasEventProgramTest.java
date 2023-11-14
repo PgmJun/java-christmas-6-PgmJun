@@ -79,7 +79,7 @@ public class ChristmasEventProgramTest extends NsTest {
     }
 
     @Test
-    void 혜택_및_배지_검증1() {
+    void 크리스마스_이전_또는_당일_혜택_및_배지_검증1() {
         assertSimpleTest(() -> {
             run("25", "해산물파스타-2,레드와인-1,초코케이크-2");
             assertThat(output()).contains("""
@@ -115,7 +115,7 @@ public class ChristmasEventProgramTest extends NsTest {
     }
 
     @Test
-    void 혜택_및_배지_검증2() {
+    void 크리스마스_이전_또는_당일_혜택_및_배지_검증2() {
         assertSimpleTest(() -> {
             run("23", "해산물파스타-2");
             assertThat(output()).contains("""
@@ -147,7 +147,7 @@ public class ChristmasEventProgramTest extends NsTest {
     }
 
     @Test
-    void 혜택_및_배지_검증3() {
+    void 크리스마스_이전_또는_당일_혜택_및_배지_검증3() {
         assertSimpleTest(() -> {
             run("23", "크리스마스파스타-4");
             assertThat(output()).contains("""
@@ -174,6 +174,37 @@ public class ChristmasEventProgramTest extends NsTest {
                                                 
                     <12월 이벤트 배지>
                     트리"""
+            );
+        });
+    }
+
+    @Test
+    void 크리스마스_이후_혜택_및_배지_검증() {
+        assertSimpleTest(() -> {
+            run("29", "크리스마스파스타-4");
+            assertThat(output()).contains("""
+                    12월 29일에 우테코 식당에서 받을 이벤트 혜택 미리 보기!
+                                                
+                    <주문 메뉴>
+                    크리스마스파스타 4개
+                                                
+                    <할인 전 총주문 금액>
+                    100,000원
+                                                
+                    <증정 메뉴>
+                    없음
+                                                
+                    <혜택 내역>
+                    주말 할인 : -8,092원
+                                                
+                    <총혜택 금액>
+                    -8,092원
+                                                
+                    <할인 후 예상 결제 금액>
+                    91,908원
+                                                
+                    <12월 이벤트 배지>
+                    별"""
             );
         });
     }
