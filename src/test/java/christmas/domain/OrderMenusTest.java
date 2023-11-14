@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -66,6 +67,15 @@ public class OrderMenusTest {
         for (String drinkMenu : drinkMenus.split(",")) {
             orderMenus.add(new OrderMenu(drinkMenu, 1));
         }
+
+        Assertions.assertThatThrownBy(() -> new OrderMenus(orderMenus))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining(ErrorMessage.INVALID_ORDER.getText());
+    }
+
+    @Test
+    void 주문한_음식이_없으면_예외_발생() {
+        List<OrderMenu> orderMenus = new ArrayList<>();
 
         Assertions.assertThatThrownBy(() -> new OrderMenus(orderMenus))
                 .isInstanceOf(IllegalArgumentException.class)
