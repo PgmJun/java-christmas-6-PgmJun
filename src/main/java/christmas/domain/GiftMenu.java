@@ -2,7 +2,7 @@ package christmas.domain;
 
 import java.util.Optional;
 
-public class GiftMenu extends OrderMenu{
+public class GiftMenu extends OrderMenu {
     private static final int GIFT_STANDARD_PRICE = 120_000;
     private static final Menu GIFT_MENU = Menu.샴페인;
     private static final int GIFT_AMOUNT = 1;

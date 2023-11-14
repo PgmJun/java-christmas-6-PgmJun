@@ -12,6 +12,6 @@ public enum ErrorMessage {
     }
 
     public String getText() {
-        return String.format("[ERROR] %s",text);
+        return String.format("[ERROR] %s", text);
     }
 }
