@@ -6,13 +6,13 @@ import java.util.List;
 public class ReservationDate {
     private final int date;
 
-    private final static List<Integer> weekends = List.of(1, 2, 8, 9, 15, 16, 22, 23, 29, 30);
-    private final static List<Integer> specialDay = List.of(3, 10, 17, 24, 25, 31);
-    public final static int CHRISTMAS_DATE = 25;
-    public final static int FIRST_DAY_OF_DECEMBER = 1;
-    public final static int LAST_DAY_OF_DECEMBER = 31;
-    public final static String WEEKDAY = "평일";
-    public final static String WEEKEND = "주말";
+    private static final List<Integer> weekends = List.of(1, 2, 8, 9, 15, 16, 22, 23, 29, 30);
+    private static final List<Integer> specialDay = List.of(3, 10, 17, 24, 25, 31);
+    public static final int CHRISTMAS_DATE = 25;
+    public static final int FIRST_DAY_OF_DECEMBER = 1;
+    public static final int LAST_DAY_OF_DECEMBER = 31;
+    public static final String WEEKDAY = "평일";
+    public static final String WEEKEND = "주말";
 
 
     public ReservationDate(int date) {
@@ -31,7 +31,7 @@ public class ReservationDate {
     }
 
     public String checkWeekdayOrWeekend() {
-        if(weekends.contains(date)) {
+        if (weekends.contains(date)) {
             return WEEKEND;
         }
         return WEEKDAY;

@@ -4,8 +4,8 @@ import christmas.global.message.ErrorMessage;
 import java.util.regex.Pattern;
 
 public class Validator {
-    private final static Pattern ORDER_MENUS_FORMAT = Pattern.compile("([가-힣]+-\\d+)(,([가-힣]+-\\d+))*");
-    private final static Pattern INT_FORMAT = Pattern.compile("\\d+");
+    private static final Pattern ORDER_MENUS_FORMAT = Pattern.compile("([가-힣]+-\\d+)(,([가-힣]+-\\d+))*");
+    private static final Pattern INT_FORMAT = Pattern.compile("\\d+");
 
 
     public static void validateReservationDateFormat(String value) {
