@@ -28,7 +28,7 @@ public class OrderMenu {
 
     private void validateMenuName(String name) {
         if (!Menu.isExistMenu(name)) {
-            throw new NoSuchElementException(ErrorMessage.INVALID_ORDER.getText());
+            throw new IllegalArgumentException(ErrorMessage.INVALID_ORDER.getText());
         }
     }
 

@@ -12,7 +12,7 @@ public class OrderMenuTest {
     @ValueSource(strings = {"양성이수프", "콜리", "맛돌이", "타피스"})
     void 메뉴판에_존재하지_않는_메뉴인_경우_예외_발생(String menuName) {
         Assertions.assertThatThrownBy(() -> new OrderMenu(menuName, 1))
-                .isInstanceOf(NoSuchElementException.class)
+                .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining(ErrorMessage.INVALID_ORDER.getText());
     }
 
