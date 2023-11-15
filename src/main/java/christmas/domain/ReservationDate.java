@@ -8,10 +8,10 @@ public class ReservationDate {
 
     private static final List<Integer> weekends = List.of(1, 2, 8, 9, 15, 16, 22, 23, 29, 30);
     private static final List<Integer> specialDay = List.of(3, 10, 17, 24, 25, 31);
-    public static final int CHRISTMAS_DATE = 25;
-    public static final int FIRST_DAY_OF_DECEMBER = 1;
-    public static final int LAST_DAY_OF_DECEMBER = 31;
-    public static final String WEEKDAY = "평일";
+    private static final int CHRISTMAS_DATE = 25;
+    private static final int FIRST_DAY_OF_DECEMBER = 1;
+    private static final int LAST_DAY_OF_DECEMBER = 31;
+    private static final String WEEKDAY = "평일";
     public static final String WEEKEND = "주말";
 
 
