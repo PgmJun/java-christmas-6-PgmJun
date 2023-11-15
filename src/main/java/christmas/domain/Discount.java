@@ -14,7 +14,7 @@ public class Discount {
     private static final int D_DAY_DISCOUNT_UNIT = 100;
     private static final int SPECIAL_DISCOUNT_PRICE = 1_000;
 
-    public Discount(int ddayDiscountPrice, int dayOfWeekDiscountPrice, int specialDiscountPrice) {
+    private Discount(int ddayDiscountPrice, int dayOfWeekDiscountPrice, int specialDiscountPrice) {
         this.ddayDiscountPrice = ddayDiscountPrice;
         this.dayOfWeekDiscountPrice = dayOfWeekDiscountPrice;
         this.specialDiscountPrice = specialDiscountPrice;
