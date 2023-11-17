@@ -1,7 +1,12 @@
 package christmas;
 
+import christmas.domain.ChristmasEventProgram;
+import christmas.view.InputView;
+import christmas.view.OutputView;
+
 public class Application {
     public static void main(String[] args) {
-        // TODO: 프로그램 구현
+        ChristmasEventProgram christmasEventProgram = new ChristmasEventProgram(new InputView(), new OutputView());
+        christmasEventProgram.run();
     }
 }
